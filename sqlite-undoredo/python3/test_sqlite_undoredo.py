@@ -236,9 +236,9 @@ class SQLiteUndoRedoTest(unittest.TestCase):
 
     #     self.assertEqual(self.sqlur._undo['undostack'], [[1, 1]])
 
-    # def test_undo(self):
-    #     with mock.patch.object(self.sqlur, '_step') as mock_step:
-    #         self.sqlur.undo()
+    def test_undo(self):
+        with mock.patch.object(self.sqlur, '_step') as mock_step:
+            self.sqlur.undo()
 
     #     mock_step.assert_called_with('undostack', 'redostack')
 
@@ -438,52 +438,54 @@ class SQLiteUndoRedoTest(unittest.TestCase):
 
 if __name__ == '__main__':
     # unittest.main()
+
+    table_name = "_a76d033d9d05153a9bc550395f576df133729deb"
     
     test_db = sqlite3.connect('db_2.sqlite')
     test_db.isolation_level = None
-    test_db.execute("CREATE TABLE tbl1(a)")
-    test_db.execute("CREATE TABLE tbl2(b)")
+    test_db.execute("CREATE TABLE _a76d033d9d05153a9bc550395f576df133729deb(a)")
+    # test_db.execute("CREATE TABLE tbl2(b)")
 
     sqlur = SQLiteUndoRedo(test_db)
 
     # sqlur._create_triggers(test_db, "tbl1")
 
 
-    sqlur.activate('tbl1')
+    sqlur.activate(table_name)
     sqlur._start_interval()
-    test_db.execute("INSERT INTO tbl1 VALUES(?)", (23,))
+    test_db.execute("INSERT INTO "+table_name +" VALUES(?)", (23,))
     sqlur.barrier()
     # print(sqlur._undo)
-    test_db.execute("INSERT INTO tbl1 VALUES(?)", (42,))
+    test_db.execute("INSERT INTO "+table_name +" VALUES(?)", (42,))
     sqlur.barrier()
     # print(sqlur._undo)
-    test_db.execute("UPDATE tbl1 SET a=? WHERE a=?", (69, 42))
-    sqlur.barrier()
-    test_db.execute("DELETE FROM tbl1 WHERE a=?", (23,))
-    sqlur.barrier()
+    # test_db.execute(f"UPDATE {table_name} SET a=? WHERE a=?", (69, 42))
+    # sqlur.barrier()
+    # test_db.execute(f"DELETE FROM {table_name} WHERE a=?", (23,))
+    # sqlur.barrier()
 
     # print( test_db.execute("SELECT * FROM tbl1").fetchall(), [(69,)])
-    print(sqlur._undo)
-    sqlur.undo()
-    print(sqlur._undo)
-    sqlur.undo()
-    print(sqlur._undo)
-    sqlur.undo()
-    print(sqlur._undo)
-    # # print(sqlur._undo)
+    # print(sqlur._undo)
+    # sqlur.undo()
+    # print(sqlur._undo)
+    # sqlur.undo()
+    # print(sqlur._undo)
+    # sqlur.undo()
+    # print(sqlur._undo)
+    # # # print(sqlur._undo)
 
-    sqlur.redo()
-    print(sqlur._undo)
-    sqlur.redo()
+    # sqlur.redo()
+    # print(sqlur._undo)
+    # sqlur.redo()
 
-    test_db.execute("INSERT INTO tbl1 VALUES(?)", (100,))
-    sqlur.barrier()
-    print(sqlur._undo)
+    # test_db.execute(f"INSERT INTO {table_name} VALUES(?)", (100,))
+    # sqlur.barrier()
+    # print(sqlur._undo)
 
     # print(sqlur._undo['undostack'], [])
     # # print(sqlur._undo['redostack'], [[1, 4]])
     # # print(sqlur._undo['firstlog'], 5)
-    print(test_db.execute("SELECT * FROM tbl1").fetchall())
+    print(test_db.execute("SELECT * FROM "+table_name).fetchall())
 
     # sqlur.activate('tbl1')
 
