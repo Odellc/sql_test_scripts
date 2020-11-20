@@ -1,5 +1,4 @@
 """Translation of the TCL example code from https://www.sqlite.org/undoredo.html."""
-
 import re
 import sqlite3
 import sys
