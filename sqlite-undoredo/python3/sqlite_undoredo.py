@@ -214,6 +214,7 @@ class SQLiteUndoRedo:
 
             db.executescript(sql)
 
+
     @staticmethod
     def _drop_triggers(db):
         """Drop all of the triggers that _create_triggers created."""
@@ -228,11 +229,13 @@ class SQLiteUndoRedo:
         except sqlite3.OperationalError:
             pass
 
+
     def _start_interval(self):
         """Record the starting conditions of an undo interval."""
         _undo = self._undo
         _undo['firstlog'] = self._db.execute(
             "SELECT coalesce(max(seq),0)+1 FROM undolog").fetchone()[0]
+
 
     def _step(self, v1, v2):
         """Do a single step of undo or redo.
