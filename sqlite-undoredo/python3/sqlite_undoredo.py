@@ -184,8 +184,10 @@ class SQLiteUndoRedo:
 
         try:
             db.execute("DROP TABLE undolog")
+            
         except sqlite3.OperationalError:
             pass
+
         db.execute("CREATE TEMP TABLE undolog(seq integer primary key, sql text)")
         for tbl in args:
             collist = db.execute(f"pragma table_info({tbl})").fetchall()
