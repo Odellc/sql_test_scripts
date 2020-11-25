@@ -184,7 +184,7 @@ class SQLiteUndoRedo:
 
         try:
             db.execute("DROP TABLE undolog")
-            
+
         except sqlite3.OperationalError:
             pass
 
@@ -226,8 +226,10 @@ class SQLiteUndoRedo:
             if not re.match("_.*_(i|u|d)t$", trigger):
                 continue
             db.execute(f"DROP TRIGGER {trigger};")
+            
         try:
             db.execute("DROP TABLE undolog")
+
         except sqlite3.OperationalError:
             pass
 
