@@ -450,7 +450,6 @@ if __name__ == '__main__':
 
     # sqlur._create_triggers(test_db, "tbl1")
 
-
     sqlur.activate(table_name)
     sqlur._start_interval()
     test_db.execute("INSERT INTO "+table_name +" VALUES(?)", (23,))
